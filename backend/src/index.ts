@@ -1,8 +1,9 @@
 import "dotenv/config";
+import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 
-import { PORT } from "./config/env";
+import { CLIENT_URL, PORT } from "./config/env";
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middlewares/errorHandler";
 import authRoutes from "./routes/auth.route";
@@ -18,6 +19,18 @@ app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.sendStatus(200);
+});
+
+app.use((req, res, next) => {
+  if (req.path === "/api/feedbacks" && req.method === "GET") {
+    cors()(req, res, next);
+  } else {
+    cors({
+      origin: CLIENT_URL,
+      methods: "GET,POST,PUT,DELETE",
+      credentials: true,
+    })(req, res, next);
+  }
 });
 
 app.use("/api/auth", authRoutes);

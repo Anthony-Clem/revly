@@ -50,23 +50,39 @@ export const createFeedback = catchErrors(async (req, res) => {
     feedbackTitle,
     authorName,
     rating,
-    userId: user.id,
+    userId: user._id,
   });
 
-  folder.feedbacks.push(feedback);
+  folder.feedbacks.push(feedback.id);
   await folder.save();
 
   return res.status(200).json(feedback);
 });
 
 export const deleteFeedback = catchErrors(async (req, res) => {
-  const feedback = await FeedbackModel.findOneAndDelete({
+  const feedbackToDelete = await FeedbackModel.findOne({
     userId: req.userId,
-    id: req.params.id,
+    _id: req.params.id,
   });
-  if (!feedback) {
+
+  if (!feedbackToDelete) {
     return res.status(404).json({ message: "Feedback not found" });
   }
+
+  const folder = await FolderModel.findOne({
+    name: feedbackToDelete.folderName,
+  });
+  if (!folder) {
+    return res.status(404).json({ message: "Folder not found" });
+  }
+
+  folder.feedbacks = folder.feedbacks.filter(
+    (feedback) => String(feedback) !== String(feedbackToDelete._id)
+  );
+
+  await folder.save();
+
+  await feedbackToDelete.deleteOne();
 
   return res.status(200).json({ message: "Feedback deleted successfully" });
 });

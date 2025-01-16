@@ -4,31 +4,34 @@ import { FeedbackDocument } from "./feedback.model";
 interface FolderDocument extends mongoose.Document {
   userId: mongoose.Schema.Types.ObjectId;
   name: string;
-  feedbacks: FeedbackDocument[];
+  feedbacks: mongoose.Schema.Types.ObjectId[];
 }
 
-const folderSchema = new mongoose.Schema<FolderDocument>({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const folderSchema = new mongoose.Schema<FolderDocument>(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    feedbacks: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Feedback",
+        },
+      ],
+      default: [],
+    },
   },
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-  },
-  feedbacks: {
-    type: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Feedback",
-      },
-    ],
-    default: [],
-  },
-});
+  { timestamps: true }
+);
 
 folderSchema.pre("findOneAndDelete", async function (next) {
   const folderId = this.getQuery()._id;
