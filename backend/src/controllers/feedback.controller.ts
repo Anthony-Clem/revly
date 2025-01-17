@@ -20,18 +20,31 @@ export const createFeedback = catchErrors(async (req, res) => {
 
   const users = await UserModel.find();
   const user = await Promise.all(
-    users.map(async (user) => ({
-      user,
-      match: await bcrypt.compare(apiKey, user.apiKey),
-    }))
+    users.map(async (user) => {
+      if (!user.apiKey || typeof user.apiKey !== "string") {
+        return { user: null, match: false };
+      }
+      return {
+        user,
+        match: await bcrypt.compare(apiKey, user.apiKey),
+      };
+    })
   ).then((results) => results.find(({ match }) => match)?.user);
 
   if (!user) {
     return res.status(400).json({ message: "Invalid API Key" });
   }
 
+  let parsedBody;
+  try {
+    parsedBody = feedbackSchema.parse(req.body);
+  } catch (err: any) {
+    return res
+      .status(400)
+      .json({ message: err.errors || "Invalid input data" });
+  }
   const { folderName, feedbackContent, feedbackTitle, authorName, rating } =
-    feedbackSchema.parse(req.body);
+    parsedBody;
 
   if (!feedbackContent && !rating) {
     return res
@@ -40,9 +53,7 @@ export const createFeedback = catchErrors(async (req, res) => {
   }
 
   if (rating && rating > 5) {
-    return res.status(400).json({
-      message: "Ratings must be out of 5",
-    });
+    return res.status(400).json({ message: "Ratings must be out of 5" });
   }
 
   const folder = await FolderModel.findOne({ name: folderName });
@@ -63,36 +74,44 @@ export const createFeedback = catchErrors(async (req, res) => {
   await folder.save();
 
   if (user.discordId) {
-    const discord = new DiscordClient(DISCORD_BOT_TOKEN);
+    if (!DISCORD_BOT_TOKEN) {
+      console.error("Discord bot token is missing");
+      return res.status(500).json({ message: "Internal server error" });
+    }
 
-    const dmChannel = await discord.createDM(user.discordId);
-    await discord.sendEmbed(dmChannel.id, {
-      title: "New Feedback Received",
-      description: "You have received new feedback!",
-      fields: [
-        { name: "Title", value: feedbackTitle || "No Title", inline: true },
-        { name: "Author", value: authorName || "Anonymous", inline: true },
-        {
-          name: "Rating",
-          value: rating ? `${rating}/5` : "No Rating",
-          inline: true,
+    const discord = new DiscordClient(DISCORD_BOT_TOKEN);
+    try {
+      const dmChannel = await discord.createDM(user.discordId);
+      await discord.sendEmbed(dmChannel.id, {
+        title: "New Feedback Received",
+        description: "You have received new feedback!",
+        fields: [
+          { name: "Title", value: feedbackTitle || "No Title", inline: true },
+          { name: "Author", value: authorName || "Anonymous", inline: true },
+          {
+            name: "Rating",
+            value: rating ? `${rating}/5` : "No Rating",
+            inline: true,
+          },
+          {
+            name: "Content",
+            value: feedbackContent || "No Feedback Content",
+          },
+          { name: "Folder", value: folderName, inline: true },
+        ],
+        color: 0x00ff00,
+        footer: {
+          text: "Feedback System",
+          icon_url: "https://example.com/logo.png",
         },
-        {
-          name: "Content",
-          value: feedbackContent || "No Feedback Content",
-        },
-        { name: "Folder", value: folderName, inline: true },
-      ],
-      color: 0x00ff00, // Optional: Green color for success
-      footer: {
-        text: "Feedback System",
-        icon_url: "https://example.com/logo.png", // Optional: Footer icon
-      },
-      timestamp: new Date().toISOString(),
-    });
+        timestamp: new Date().toISOString(),
+      });
+    } catch (discordError) {
+      console.error("Failed to send Discord notification:", discordError);
+    }
   }
 
-  return res.status(200).json(feedback);
+  return res.status(200).json({ message: "Success" });
 });
 
 export const deleteFeedback = catchErrors(async (req, res) => {
