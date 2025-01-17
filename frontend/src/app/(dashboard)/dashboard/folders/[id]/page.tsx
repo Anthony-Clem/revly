@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteFolderOrFeedback, getFolder } from "@/hooks/folders";
+import { useDeleteFolderOrFeedback, useGetFolder } from "@/hooks/folders";
 import { formatDate } from "@/lib/utils";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Star } from "lucide-react";
@@ -23,13 +23,10 @@ const FolderPage = () => {
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
-  if (!id) {
-    return null;
-  }
-  const { data: folder, isPending } = getFolder({ id });
+  const { data: folder, isPending } = useGetFolder({ id: id || "" });
 
   const { mutate: deleteFeedback, isPending: deletingFeedbackPending } =
-    deleteFolderOrFeedback({ type: "feedback" });
+    useDeleteFolderOrFeedback({ type: "feedback" });
 
   if (isPending) {
     return (

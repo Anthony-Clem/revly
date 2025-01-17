@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export const register = () => {
+export const useRegister = () => {
   return useMutation({
     mutationFn: async (data: z.infer<typeof registerSchema>) => {
       const res = await axiosInstance.post("/auth/register", data);
@@ -22,7 +22,7 @@ export const register = () => {
   });
 };
 
-export const login = () => {
+export const useLogin = () => {
   return useMutation({
     mutationFn: async (data: z.infer<typeof loginSchema>) => {
       const res = await axiosInstance.post("/auth/login", data);
@@ -38,7 +38,7 @@ export const login = () => {
   });
 };
 
-export const logout = () => {
+export const useLogout = () => {
   return useMutation({
     mutationFn: async () => {
       const res = await axiosInstance.get("/auth/logout");

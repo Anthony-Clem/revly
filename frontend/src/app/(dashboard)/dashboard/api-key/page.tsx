@@ -1,10 +1,10 @@
 "use client";
 
-import { getUser } from "@/hooks/user";
+import { useGetUser } from "@/hooks/user";
 import { formatDateTime } from "@/lib/utils";
 
 const ApiKeyPage = () => {
-  const { data: user } = getUser();
+  const { data: user } = useGetUser();
 
   if (!user) {
     return null;

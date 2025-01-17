@@ -1,6 +1,6 @@
 "use client";
 
-import { getFolders } from "@/hooks/folders";
+import { useGetFolders } from "@/hooks/folders";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { formatDate } from "@/lib/utils";
 import { FaTrash } from "react-icons/fa";
@@ -9,7 +9,7 @@ import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Folders = () => {
-  const { data: folders, isPending } = getFolders();
+  const { data: folders, isPending } = useGetFolders();
 
   if (isPending) {
     return (

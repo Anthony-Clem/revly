@@ -15,12 +15,10 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import LoadingButton from "../common/loading-button";
-import { useRouter } from "next/navigation";
-import { login } from "@/hooks/auth";
+import { useLogin } from "@/hooks/auth";
 
 const LoginForm = () => {
-  const router = useRouter();
-  const { mutate: loginMutation, isPending } = login();
+  const { mutate: loginMutation, isPending } = useLogin();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),

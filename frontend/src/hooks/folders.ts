@@ -3,7 +3,26 @@ import { queryClient } from "@/lib/queryClient";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export const getFolders = () => {
+type Folder = {
+  _id: string;
+  name: string;
+  feedbacks: Feedback[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Feedback = {
+  _id: string;
+  folderName: string;
+  authorName: string;
+  feedbackTitle: string;
+  feedbackContent: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const useGetFolders = () => {
   return useQuery<Folder[] | null>({
     queryKey: ["folders"],
     queryFn: async () => {
@@ -20,7 +39,7 @@ export const getFolders = () => {
   });
 };
 
-export const getFolder = ({ id }: { id: string }) => {
+export const useGetFolder = ({ id }: { id: string }) => {
   return useQuery<Folder | null>({
     queryKey: ["folder"],
     queryFn: async () => {
@@ -38,7 +57,7 @@ export const getFolder = ({ id }: { id: string }) => {
   });
 };
 
-export const createFolder = () => {
+export const useCreateFolder = () => {
   return useMutation({
     mutationFn: async ({ name }: { name: string }) => {
       const res = await axiosInstance.post("/folders", { name });
@@ -53,7 +72,7 @@ export const createFolder = () => {
   });
 };
 
-export const deleteFolderOrFeedback = ({
+export const useDeleteFolderOrFeedback = ({
   type,
 }: {
   type: "folder" | "feedback";

@@ -1,11 +1,11 @@
 "use client";
 
-import { getUser } from "@/hooks/user";
+import { useGetUser } from "@/hooks/user";
 import UserActions from "./user-actions";
 import UserIcon from "./user-icon";
 
 const UserInfo = () => {
-  const { data: user } = getUser();
+  const { data: user } = useGetUser();
 
   if (!user) {
     return null;

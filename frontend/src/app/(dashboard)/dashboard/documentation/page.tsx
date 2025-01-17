@@ -1,19 +1,6 @@
 import CodeSnippet from "@/components/common/code-snippet";
 
 const DocumentationPage = () => {
-  const codeSnippet = `await fetch("${process.env.NEXT_PUBLIC_SERVER_URL}/feedbacks", {
-    method: "POST",
-    body: JSON.stringify({
-      folderName: "<YOUR_EXISTING_FOLDER_NAME>",
-      feedbackContent: "Add subscription to monetize.",
-      feedbackTitle: "Subscription",
-      authorName: "John Doe",
-      rating: 5,
-    }),
-    headers: {
-      Authorization: "Bearer <YOUR_API_KEY>"
-    }
-  })`;
   return (
     <div className="flex flex-col-reverse xl:flex-row justify-between gap-10">
       <div>

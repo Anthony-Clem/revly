@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { createFolder } from "@/hooks/folders";
+import { useCreateFolder } from "@/hooks/folders";
 import LoadingButton from "../common/loading-button";
 
 interface CreateFolderFormProps {
@@ -12,7 +12,7 @@ interface CreateFolderFormProps {
 const CreateFolderForm = ({ closeModal }: CreateFolderFormProps) => {
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { mutate: createFolderMutation, isPending } = createFolder();
+  const { mutate: createFolderMutation, isPending } = useCreateFolder();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

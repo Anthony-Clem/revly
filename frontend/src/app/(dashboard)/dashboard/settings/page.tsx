@@ -2,18 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getUser, updateDiscordId } from "@/hooks/user";
+import { useGetUser, useUpdateDiscordId } from "@/hooks/user";
 import React, { useState } from "react";
 
 const SettingsPage = () => {
-  const { data: user } = getUser();
-  const { mutate: updateDiscordIdMutation } = updateDiscordId();
+  const { data: user } = useGetUser();
+  const [discordId, setDiscordId] = useState(user?.discordId || "");
+  const { mutate: updateDiscordIdMutation } = useUpdateDiscordId();
 
   if (!user) {
     return null;
   }
-
-  const [discordId, setDiscordId] = useState(user.discordId || "");
 
   const handleSubmit = () => {
     if (!discordId) return null;

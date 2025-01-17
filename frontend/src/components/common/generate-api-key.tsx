@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import LoadingButton from "./loading-button";
-import { getAPIKey } from "@/hooks/user";
+import { useGetAPIKey } from "@/hooks/user";
 import { PiCopySimple } from "react-icons/pi";
 import { toast } from "sonner";
 
 const GenerateApiKey = ({ closeModal }: { closeModal: () => void }) => {
   const [newApiKey, setNewApiKey] = useState<string | null>(null);
-  const { mutate: getAPIKeyMutation, isPending } = getAPIKey();
+  const { mutate: getAPIKeyMutation, isPending } = useGetAPIKey();
 
   const handleGenerateApiKey = () => {
     getAPIKeyMutation(undefined, {

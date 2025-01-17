@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { deleteFolderOrFeedback } from "@/hooks/folders";
+import { useDeleteFolderOrFeedback } from "@/hooks/folders";
 import LoadingButton from "./loading-button";
 
 interface PopUpProps {
@@ -20,7 +20,7 @@ interface PopUpProps {
 }
 
 const PopUp = ({ children, type, name, id }: PopUpProps) => {
-  const { mutate: deleteMutation, isPending } = deleteFolderOrFeedback({
+  const { mutate: deleteMutation, isPending } = useDeleteFolderOrFeedback({
     type,
   });
 

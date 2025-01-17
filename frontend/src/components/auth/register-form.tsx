@@ -15,10 +15,10 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import LoadingButton from "../common/loading-button";
-import { register } from "@/hooks/auth";
+import { useRegister } from "@/hooks/auth";
 
 const RegisterForm = () => {
-  const { mutate: registerMutation, isPending } = register();
+  const { mutate: registerMutation, isPending } = useRegister();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),

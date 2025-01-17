@@ -1,8 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import Logo from "../common/logo";
-import { Button } from "../ui/button";
-import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
 import { Url } from "next/dist/shared/lib/router/router";
 

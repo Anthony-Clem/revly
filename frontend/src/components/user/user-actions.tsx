@@ -8,12 +8,12 @@ import {
 } from "../ui/dropdown-menu";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { Button } from "../ui/button";
-import { logout } from "@/hooks/auth";
+import { useLogout } from "@/hooks/auth";
 import UserIcon from "./user-icon";
 import Link from "next/link";
 
 const UserActions = ({ letter }: { letter: string }) => {
-  const { mutate: logoutMutation } = logout();
+  const { mutate: logoutMutation } = useLogout();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

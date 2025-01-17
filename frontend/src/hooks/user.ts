@@ -12,7 +12,7 @@ interface User {
   lastTimeGeneratingKey: string;
 }
 
-export const getUser = () => {
+export const useGetUser = () => {
   return useQuery<User | null>({
     queryKey: ["user"],
     queryFn: async () => {
@@ -32,7 +32,7 @@ export const getUser = () => {
   });
 };
 
-export const getAPIKey = () => {
+export const useGetAPIKey = () => {
   return useMutation({
     mutationFn: async () => {
       const res = await axiosInstance.get("/user/generate/api-key");
@@ -48,7 +48,7 @@ export const getAPIKey = () => {
   });
 };
 
-export const updateDiscordId = () => {
+export const useUpdateDiscordId = () => {
   return useMutation({
     mutationFn: async ({ id }: { id: string }) => {
       const res = await axiosInstance.post("/user/discord", { id });
