@@ -21,13 +21,13 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.use((req, res, next) => {
-  if (req.path === "/api/feedbacks" && req.method === "GET") {
+app.use("/api/feedbacks", (req, res, next) => {
+  if (req.method === "POST") {
     cors()(req, res, next);
   } else {
     cors({
       origin: CLIENT_URL,
-      methods: "GET,POST,PUT,DELETE",
+      methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
     })(req, res, next);
   }
