@@ -56,7 +56,7 @@ export const createFeedback = catchErrors(async (req, res) => {
     return res.status(400).json({ message: "Ratings must be out of 5" });
   }
 
-  const folder = await FolderModel.findOne({ name: folderName });
+  const folder = await FolderModel.findOne({ name: folderName.toLowerCase() });
   if (!folder) {
     return res.status(404).json({ message: "Folder not found" });
   }
