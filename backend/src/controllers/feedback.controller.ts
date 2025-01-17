@@ -111,7 +111,7 @@ export const createFeedback = catchErrors(async (req, res) => {
     }
   }
 
-  return res.status(200).json({ message: "Success" });
+  return res.status(200).json({ feedback });
 });
 
 export const deleteFeedback = catchErrors(async (req, res) => {
