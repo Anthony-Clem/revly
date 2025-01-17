@@ -12,8 +12,12 @@ const ApiKeyPage = () => {
   return (
     <div>
       <div className="bg-gray-900 text-gray-300 py-4 px-2 max-sm:text-sm flex flex-col sm:flex-row gap-3 sm:gap-0 items-center justify-between">
-        <p>API last time generated:</p>
-        <p>{formatDateTime(user.lastTimeGeneratingKey)}</p>
+        <p>API key last time generated:</p>
+        {!user.lastTimeGeneratingKey ? (
+          <p>No API key generated yet</p>
+        ) : (
+          <p>{formatDateTime(user.lastTimeGeneratingKey)}</p>
+        )}
       </div>
     </div>
   );

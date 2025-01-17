@@ -13,8 +13,12 @@ const DashboardPageHeader = () => {
       setTitle("Documentation");
     } else if (pathname.includes("api-key")) {
       setTitle("API Key");
-    } else {
+    } else if (pathname === "/dashboard/settings") {
+      setTitle("Settings");
+    } else if (pathname === "/dashboard/folders") {
       setTitle("Folders");
+    } else {
+      setTitle("Feedbacks");
     }
   }, [pathname]);
 

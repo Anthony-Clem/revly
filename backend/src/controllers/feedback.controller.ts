@@ -4,6 +4,8 @@ import UserModel from "../models/user.model";
 import { catchErrors } from "../utils/catchErrors";
 import FolderModel from "../models/folder.model";
 import FeedbackModel from "../models/feedback.model";
+import { DiscordClient } from "../lib/discord-client";
+import { DISCORD_BOT_TOKEN } from "../config/env";
 
 export const createFeedback = catchErrors(async (req, res) => {
   const authHeader = req.headers["authorization"];
@@ -37,7 +39,11 @@ export const createFeedback = catchErrors(async (req, res) => {
       .json({ message: "Must have feedback content or rating" });
   }
 
-  //TODO Add a user prefrence allowing the automated creation of folders through this route
+  if (rating && rating > 5) {
+    return res.status(400).json({
+      message: "Ratings must be out of 5",
+    });
+  }
 
   const folder = await FolderModel.findOne({ name: folderName });
   if (!folder) {
@@ -55,6 +61,36 @@ export const createFeedback = catchErrors(async (req, res) => {
 
   folder.feedbacks.push(feedback.id);
   await folder.save();
+
+  if (user.discordId) {
+    const discord = new DiscordClient(DISCORD_BOT_TOKEN);
+
+    const dmChannel = await discord.createDM(user.discordId);
+    await discord.sendEmbed(dmChannel.id, {
+      title: "New Feedback Received",
+      description: "You have received new feedback!",
+      fields: [
+        { name: "Title", value: feedbackTitle || "No Title", inline: true },
+        { name: "Author", value: authorName || "Anonymous", inline: true },
+        {
+          name: "Rating",
+          value: rating ? `${rating}/5` : "No Rating",
+          inline: true,
+        },
+        {
+          name: "Content",
+          value: feedbackContent || "No Feedback Content",
+        },
+        { name: "Folder", value: folderName, inline: true },
+      ],
+      color: 0x00ff00, // Optional: Green color for success
+      footer: {
+        text: "Feedback System",
+        icon_url: "https://example.com/logo.png", // Optional: Footer icon
+      },
+      timestamp: new Date().toISOString(),
+    });
+  }
 
   return res.status(200).json(feedback);
 });

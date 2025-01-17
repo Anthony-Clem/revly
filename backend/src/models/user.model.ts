@@ -5,6 +5,7 @@ interface UserDocument extends mongoose.Document {
   email: string;
   password: string;
   apiKey: string;
+  discordId: string;
   lastTimeGeneratingKey: Date;
   comparePasswords(val: string): Promise<boolean>;
 }
@@ -21,6 +22,10 @@ const userSchema = new mongoose.Schema<UserDocument>(
       required: true,
     },
     apiKey: {
+      type: String,
+      default: null,
+    },
+    discordId: {
       type: String,
       default: null,
     },

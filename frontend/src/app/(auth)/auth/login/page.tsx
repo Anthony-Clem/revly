@@ -7,7 +7,6 @@ const LoginPage = () => {
     <AuthCard
       title="Welcome to revly"
       description="Please log in to continue"
-      showSocial
       redirectLink="/auth/register"
       redirectQuestion="Don't have an account?"
       redirectText="Register"

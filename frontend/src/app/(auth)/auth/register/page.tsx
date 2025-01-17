@@ -7,7 +7,6 @@ const RegisterPage = () => {
     <AuthCard
       title="Create your account"
       description="Register to start keeping track of yout feedback!"
-      showSocial
       redirectLink="/auth/login"
       redirectQuestion="Already have an account?"
       redirectText="Login"

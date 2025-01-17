@@ -11,17 +11,27 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const { data: user, isLoading } = getUser();
 
+  const [isRedirecting, setIsRedirecting] = React.useState(false);
+
   React.useEffect(() => {
     if (!isLoading) {
       if (user && pathname.includes("/auth")) {
+        setIsRedirecting(true);
         router.replace("/dashboard/folders");
       } else if (!user && pathname.includes("/dashboard")) {
+        setIsRedirecting(true);
         router.replace("/auth/login");
+      } else {
+        setIsRedirecting(false);
       }
     }
   }, [user, pathname, router, isLoading]);
 
-  if (isLoading || (user && pathname.includes("/auth"))) {
+  if (
+    isLoading ||
+    isRedirecting ||
+    (!user && pathname.includes("/dashboard"))
+  ) {
     return (
       <div className="h-screen flex items-center justify-center">
         <AiOutlineLoading3Quarters className="size-5 animate-spin" />

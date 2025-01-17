@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Kumbh_Sans } from "next/font/google";
+import Link from "next/link";
 
 const kumbhSans = Kumbh_Sans({ subsets: ["latin"] });
 
@@ -9,14 +10,15 @@ interface LogoProps {
 
 const Logo = ({ className }: LogoProps) => {
   return (
-    <div
+    <Link
+      href="/"
       className={cn(
         `${kumbhSans.className} font-semibold text-2xl text-gray-600`,
         className
       )}
     >
       revly
-    </div>
+    </Link>
   );
 };
 

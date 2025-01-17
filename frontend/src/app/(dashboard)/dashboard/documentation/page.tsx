@@ -1,5 +1,4 @@
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import CodeSnippet from "@/components/common/code-snippet";
 
 const DocumentationPage = () => {
   const codeSnippet = `await fetch("${process.env.NEXT_PUBLIC_SERVER_URL}/feedbacks", {
@@ -67,25 +66,7 @@ const DocumentationPage = () => {
         </ul>
         <h3 className="mt-6 text-lg text-white">Example Request</h3>
       </div>
-      <div className="bg-gray-800 text-sm">
-        <SyntaxHighlighter
-          language="typescript"
-          style={{
-            ...oneDark,
-            'pre[class*="language-"]': {
-              ...oneDark['pre[class*="language-"]'],
-              background: "transparent",
-              overflow: "hidden",
-            },
-            'code[class*="language-"]': {
-              ...oneDark['code[class*="language-"]'],
-              background: "transparent",
-            },
-          }}
-        >
-          {codeSnippet}
-        </SyntaxHighlighter>
-      </div>
+      <CodeSnippet />
     </div>
   );
 };

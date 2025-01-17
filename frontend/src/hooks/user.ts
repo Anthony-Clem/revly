@@ -8,6 +8,7 @@ import { toast } from "sonner";
 interface User {
   _id: string;
   email: string;
+  discordId: string;
   lastTimeGeneratingKey: string;
 }
 
@@ -40,6 +41,22 @@ export const getAPIKey = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("API Key generated");
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    },
+  });
+};
+
+export const updateDiscordId = () => {
+  return useMutation({
+    mutationFn: async ({ id }: { id: string }) => {
+      const res = await axiosInstance.post("/user/discord", { id });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("Discord Id updated");
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Something went wrong");

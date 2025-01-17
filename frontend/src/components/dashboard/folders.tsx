@@ -6,9 +6,18 @@ import { formatDate } from "@/lib/utils";
 import { FaTrash } from "react-icons/fa";
 import PopUp from "../common/pop-up";
 import Link from "next/link";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Folders = () => {
-  const { data: folders } = getFolders();
+  const { data: folders, isPending } = getFolders();
+
+  if (isPending) {
+    return (
+      <div className="size-full flex items-center justify-center">
+        <AiOutlineLoading3Quarters className="animate-spin size-4" />
+      </div>
+    );
+  }
 
   if (!folders || folders.length === 0) {
     return (

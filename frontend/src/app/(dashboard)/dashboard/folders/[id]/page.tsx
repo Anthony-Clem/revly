@@ -16,6 +16,7 @@ import { Star } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const FolderPage = () => {
   const [openFeedbackId, setOpenFeedbackId] = useState<string | null>(null);
@@ -25,10 +26,19 @@ const FolderPage = () => {
   if (!id) {
     return null;
   }
-  const { data: folder } = getFolder({ id });
+  const { data: folder, isPending } = getFolder({ id });
 
   const { mutate: deleteFeedback, isPending: deletingFeedbackPending } =
     deleteFolderOrFeedback({ type: "feedback" });
+
+  if (isPending) {
+    return (
+      <div className="size-full flex items-center justify-center">
+        <AiOutlineLoading3Quarters className="animate-spin size-4" />
+      </div>
+    );
+  }
+
   if (!folder) {
     return null;
   }

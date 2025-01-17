@@ -10,7 +10,6 @@ interface AuthCardProps {
   children: React.ReactNode;
   title: string;
   description: string;
-  showSocial?: boolean;
   redirectLink?: Url;
   redirectQuestion?: string;
   redirectText?: string;
@@ -36,16 +35,7 @@ const AuthCard = ({
         </div>
       </CardHeader>
       <CardContent>{children}</CardContent>
-      <CardFooter className="flex flex-col gap-4">
-        <div className="w-full flex flex-col gap-3">
-          <div className="border-t border-neutral-200" />
-          <p className="text-center text-preset-5 text-neutral-700">or</p>
-          <Button variant="outline" className="w-full" size="lg">
-            <FaGoogle />
-            Google
-          </Button>
-          <div className="border-t border-neutral-200" />
-        </div>
+      <CardFooter>
         {redirectProperties && (
           <div className="text-preset-5">
             {redirectQuestion}{" "}

@@ -6,16 +6,18 @@ import React from "react";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="min-h-screen">
-      <MobileHeader />
-      <div className="h-screen w-full flex">
-        <Sidebar />
-        <div className="w-full h-full flex flex-col ">
-          <DashboardPageHeader />
-          <div className="px-10 flex-1">{children}</div>
+    <AuthProvider>
+      <main className="min-h-screen">
+        <MobileHeader />
+        <div className="h-screen w-full flex">
+          <Sidebar />
+          <div className="w-full h-full flex flex-col ">
+            <DashboardPageHeader />
+            <div className="px-10 flex-1">{children}</div>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </AuthProvider>
   );
 };
 

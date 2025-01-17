@@ -10,6 +10,7 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { logout } from "@/hooks/auth";
 import UserIcon from "./user-icon";
+import Link from "next/link";
 
 const UserActions = ({ letter }: { letter: string }) => {
   const { mutate: logoutMutation } = logout();
@@ -22,9 +23,9 @@ const UserActions = ({ letter }: { letter: string }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuItem>Theme</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <Link href="/dashboard/settings">
+          <DropdownMenuItem className="flex">Settings</DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-destructive font-bold"

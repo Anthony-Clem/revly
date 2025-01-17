@@ -13,3 +13,4 @@ export const NODE_ENV = getEnv("NODE_ENV", "development");
 export const MONGO_URI = getEnv("MONGO_URI");
 export const JWT_SECRET = getEnv("JWT_SECRET");
 export const CLIENT_URL = getEnv("CLIENT_URL");
+export const DISCORD_BOT_TOKEN = getEnv("DISCORD_BOT_TOKEN");
