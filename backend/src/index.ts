@@ -3,7 +3,7 @@ import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 
-import { CLIENT_URL, PORT } from "./config/env";
+import { CLIENT_URL, NODE_ENV, PORT } from "./config/env";
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middlewares/errorHandler";
 import authRoutes from "./routes/auth.route";
@@ -41,6 +41,6 @@ app.use("/api/feedbacks", feedbackRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port:${PORT}`);
+  console.log(`Server running on port:${PORT} in ${NODE_ENV} environment`);
   connectDB();
 });
