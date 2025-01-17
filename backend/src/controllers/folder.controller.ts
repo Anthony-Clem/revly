@@ -33,10 +33,11 @@ export const getFolder = catchErrors(async (req, res) => {
   const folder = await FolderModel.findOne({
     _id: req.params.id,
     userId: req.userId,
-  }).populate(
-    "feedbacks",
-    "authorName feedbackTitle feedbackContent rating createdAt"
-  );
+  }).populate({
+    path: "feedbacks",
+    select: "authorName feedbackTitle feedbackContent rating createdAt",
+    options: { sort: { createdAt: -1 } },
+  });
 
   if (!folder) {
     return res.status(404).json({ message: "Folder not found" });
