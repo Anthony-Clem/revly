@@ -7,6 +7,14 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 
+type ErrorResponse = {
+  response?: {
+    data?: {
+      message: string;
+    };
+  };
+};
+
 export const useRegister = () => {
   return useMutation({
     mutationFn: async (data: z.infer<typeof registerSchema>) => {
@@ -16,7 +24,7 @@ export const useRegister = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
@@ -31,7 +39,7 @@ export const useLogin = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     },
@@ -47,8 +55,10 @@ export const useLogout = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
 };
+
+//@typescript-eslint/no-explicit-any

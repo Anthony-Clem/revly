@@ -3,6 +3,17 @@ import { Card } from "../ui/card";
 import { formatDate } from "@/lib/utils";
 import { Star } from "lucide-react";
 
+type Feedback = {
+  _id: string;
+  folderName: string;
+  authorName: string;
+  feedbackTitle: string;
+  feedbackContent: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 const FeedbackCard = ({ feedback }: { feedback: Feedback }) => {
   return (
     <Card className=" p-3 hover:scale-105 active:scale-100 cursor-pointer">

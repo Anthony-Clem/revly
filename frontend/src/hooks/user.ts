@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { axiosInstance } from "@/lib/axios";
@@ -11,6 +13,14 @@ interface User {
   discordId: string;
   lastTimeGeneratingKey: string;
 }
+
+type ErrorResponse = {
+  response?: {
+    data?: {
+      message: string;
+    };
+  };
+};
 
 export const useGetUser = () => {
   return useQuery<User | null>({
@@ -38,11 +48,11 @@ export const useGetAPIKey = () => {
       const res = await axiosInstance.get("/user/generate/api-key");
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("API Key generated");
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
@@ -54,11 +64,11 @@ export const useUpdateDiscordId = () => {
       const res = await axiosInstance.post("/user/discord", { id });
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("Discord Id updated");
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });

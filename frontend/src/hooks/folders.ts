@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { axiosInstance } from "@/lib/axios";
 import { queryClient } from "@/lib/queryClient";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -20,6 +22,14 @@ type Feedback = {
   rating: number;
   createdAt: string;
   updatedAt: string;
+};
+
+type ErrorResponse = {
+  response?: {
+    data?: {
+      message: string;
+    };
+  };
 };
 
 export const useGetFolders = () => {
@@ -66,7 +76,7 @@ export const useCreateFolder = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["folders"] });
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
@@ -87,7 +97,7 @@ export const useDeleteFolderOrFeedback = ({
       queryClient.invalidateQueries({ queryKey: ["folder"] });
       toast.success(`${type} deleted successfully`);
     },
-    onError: (error: any) => {
+    onError: (error: ErrorResponse) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
