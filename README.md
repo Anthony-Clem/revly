@@ -1,4 +1,4 @@
-# Centralized Feedback and Rating System
+# revly
 
 ## Overview
 This project provides developers with a centralized solution for managing feedback and ratings submitted via their applications. By integrating our API into your project's feedback or rating forms, you can collect, manage, and receive real-time notifications for all submissions in one place. Notifications are powered by a Discord bot, ensuring you stay updated instantly.
