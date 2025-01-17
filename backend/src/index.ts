@@ -21,13 +21,17 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.use(
-  cors({
-    origin: CLIENT_URL, // Ensure this matches your Next.js app's URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // Include this if cookies or credentials are used
-  })
-);
+app.use("/api/feedbacks", (req, res, next) => {
+  if (req.method === "POST") {
+    cors()(req, res, next);
+  } else {
+    cors({
+      origin: CLIENT_URL,
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    })(req, res, next);
+  }
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", authenticate, userRoutes);
